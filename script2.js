@@ -1,6 +1,29 @@
-let alarmHour = null;
-let alarmMinute = null;
-let alarmPlayed = false;
+const alarms = [];
+let nextAlarmId = 1;
+
+function renderAlarms() {
+    const list = document.getElementById("alarm-list");
+    if (!list) return;
+    list.replaceChildren();
+    for (const alarm of alarms) {
+        const item = document.createElement("li");
+        const label = document.createElement("span");
+        const time = String(alarm.hour).padStart(2, "0") + ":" +
+            String(alarm.minute).padStart(2, "0");
+        label.textContent = time + (alarm.played ? "（終了）" : "（待機中）");
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "削除";
+        remove.setAttribute("aria-label", time + "のアラームを削除");
+        remove.addEventListener("click", function () {
+            alarms.splice(alarms.findIndex(entry => entry.id === alarm.id), 1);
+            renderAlarms();
+            document.getElementById("alarm-message").textContent = time + "のアラームを削除しました";
+        });
+        item.append(label, remove);
+        list.append(item);
+    }
+}
 
 
 // ======================
@@ -31,17 +54,16 @@ if (alarmButton) {
 
     alarmButton.addEventListener("click", function() {
 
-        alarmHour =
-            Number(document.getElementById("alarm-hour").value);
-
-        alarmMinute =
-            Number(document.getElementById("alarm-minute").value);
-
-        alarmPlayed = false;
-
-        document.getElementById("alarm-message").textContent =
-            alarmHour + "時" +
-            alarmMinute + "分にアラームを設定しました";
+        const hour = Number(document.getElementById("alarm-hour").value);
+        const minute = Number(document.getElementById("alarm-minute").value);
+        const message = document.getElementById("alarm-message");
+        if (alarms.some(alarm => !alarm.played && alarm.hour === hour && alarm.minute === minute)) {
+            message.textContent = "その時刻のアラームは設定済みです";
+            return;
+        }
+        alarms.push({ id: nextAlarmId++, hour, minute, played: false });
+        renderAlarms();
+        message.textContent = hour + "時" + minute + "分にアラームを追加しました";
 
     });
 
@@ -102,23 +124,20 @@ function updateclock() {
         weekdays[day] + ")";
 
 
-    // アラーム
-    if (
-        hour === alarmHour &&
-        minute === alarmMinute &&
-        alarmPlayed === false
-    ) {
-
-        const sound =
-            document.getElementById("alarm-sound");
-
-        if (sound) {
-
-            sound.play();
-
-            alarmPlayed = true;
-
-        }
+    // 設定した各アラームは一度だけ鳴らす。
+    const due = alarms.filter(alarm =>
+        !alarm.played && alarm.hour === hour && alarm.minute === minute);
+    const sound = document.getElementById("alarm-sound");
+    if (due.length && sound) {
+        due.forEach(alarm => { alarm.played = true; });
+        renderAlarms();
+        document.getElementById("alarm-message").textContent =
+            hour + "時" + minute + "分のアラームです";
+        sound.currentTime = 0;
+        sound.play().catch(() => {
+            document.getElementById("alarm-message").textContent =
+                "音声を再生できませんでした。ブラウザーの音声再生設定を確認してください";
+        });
     }
 }
 
@@ -143,7 +162,7 @@ if (stopButton) {
 
         }
 
-        alarmPlayed = true;
+        // 待機中のほかのアラームは変更しない。
 
     });
 

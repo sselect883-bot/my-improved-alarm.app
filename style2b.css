@@ -319,3 +319,25 @@ button{
 }
 
 
+
+.alarm-list-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+#alarm-list {
+    list-style: none;
+    padding: 0;
+}
+
+#alarm-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+#alarm-list button {
+    padding: 10px 16px;
+}

@@ -66,7 +66,7 @@
 
 <div class="custom-time-picker">
 
-    <select id="alarm-hour">
+    <select id="alarm-hour" aria-label="アラームの時">
         <option value="0">00</option>
         <option value="1">01</option>
         <option value="2">02</option>
@@ -98,7 +98,7 @@
 
     <span>:</span>
 
-    <select id="alarm-minute">
+    <select id="alarm-minute" aria-label="アラームの分">
     <option value="0">00</option>
     <option value="5">05</option>
     <option value="10">10</option>
@@ -119,7 +119,7 @@
     <div class="alarm-container">
         
         <div class="alarm-button">
-                <button id="set-button">アラーム設定</button>
+                <button id="set-button">アラーム追加</button>
                 <button id="stop-button">アラーム停止</button>
         </div>
         
@@ -132,7 +132,12 @@
 
 </div>
 
-<p id="alarm-message"></p>
+<section class="alarm-list-container" aria-labelledby="alarm-list-title">
+    <h2 id="alarm-list-title">設定したアラーム</h2>
+    <p>各アラームは一度だけ鳴ります。ページを離れたり再読み込みすると設定は消えます。</p>
+    <ul id="alarm-list"></ul>
+</section>
+<p id="alarm-message" role="status"></p>
 
 <audio id="alarm-sound" src ="alarm.mp3"></audio>
 

@@ -305,8 +305,10 @@ button{
 
 
 .alarm-list-container {
-    width: 100%;
-    max-width: 460px;
+    width: 90%;
+    max-width: 400px;
+    color:#AAB4C8;
+    margin:0 auto;
 }
 
 #alarm-list {

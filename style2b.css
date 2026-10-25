@@ -20,7 +20,7 @@ body{
 
 header{
     height:50px;
-    background-color:#777777;
+    background-color:black;
     width:100%;
     margin-bottom:30px;
 
@@ -50,6 +50,7 @@ header p{
     width:180px;
 
     background-color:black;
+    color:#AAB4C8;
     border-radius:10px;
 
     box-shadow:0 5px 20px rgba(0,0,0,0.2);
@@ -60,7 +61,7 @@ header p{
 .menu a{
     display:block;
     padding:15px;
-    color:white;
+    color:#AAB4C8;
     text-decoration:none;
     border-radius:none;
 }
@@ -157,16 +158,16 @@ body{
 }
 
 .all-container{
-    width: 50%;
-    max-width: 400px;
+    width:90%;
+    max-width:400px;
 
-    margin: 0 auto;
-    padding: 30px;
+    margin:0 auto;
+    padding:30px;
 
-    border: 2px solid #333;
-    border-radius: 30px;
+    border:2px solid #333;
+    border-radius:30px;
 
-    background-color: black;
+    background-color:black;
 }
 
 .title-container{
@@ -176,7 +177,7 @@ body{
 .date-container{
     display:flex;
     padding-bottom:0px;
-    color:white;
+    color:#AAB4C8;
     /*flex-direction: column;*/
     /*border :2px solid;*/
     border-color:gray;
@@ -187,12 +188,12 @@ body{
 .date-container p{
     font-size:20px;
     margin:10px;
-    opacity:0.4;
+    opacity:1.0;
 }
 
 .time-container{
     display:flex;
-    color:white;
+    color:#AAB4C8;
     /*flex-direction: column;*/
     /*border :2px solid;*/
     border-color:rgb(180, 176, 176);
@@ -283,7 +284,6 @@ button{
     padding:15px;
 }
 
-
 .dli-clock {
   display: inline-block;
   vertical-align: middle;
@@ -318,16 +318,16 @@ button{
   height: 0.1em;
 }
 
-
-
 .alarm-list-container {
     width: 100%;
     max-width: 460px;
+    color:#AAB4C8;s
 }
 
 #alarm-list {
     list-style: none;
     padding: 0;
+    
 }
 
 #alarm-list li {
@@ -336,6 +336,7 @@ button{
     align-items: center;
     gap: 16px;
     margin-bottom: 10px;
+
 }
 
 #alarm-list button {

@@ -10,8 +10,46 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class AlarmStoreTest {
     private val context get() = InstrumentationRegistry.getInstrumentation().targetContext
-    @Before fun clearBefore() { clear() }
-    @After fun clearAfter() { clear() }
+    @Before fun clearBefore() {
+        if (android.os.Build.VERSION.SDK_INT >= 31)
+            shell("appops set " + context.packageName + " SCHEDULE_EXACT_ALARM allow")
+        if (android.os.Build.VERSION.SDK_INT >= 33)
+            shell("pm grant " + context.packageName + " android.permission.POST_NOTIFICATIONS")
+        clear()
+    }
+    @After fun clearAfter() {
+        shell("dumpsys deviceidle unforce")
+        shell("dumpsys battery reset")
+        shell("input keyevent KEYCODE_WAKEUP")
+        context.stopService(android.content.Intent(context, AlarmService::class.java))
+        clear()
+    }
+    private fun shell(command: String) {
+        InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command)
+            .use { descriptor ->
+                android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).bufferedReader().use { it.readText() }
+            }
+    }
+
+    @Test fun scheduledAlarmStartsWhileScreenIsOffAndDeviceIsIdle() {
+        val a = Alarm(9999, 12, 0, System.currentTimeMillis() + 20_000)
+        context.getSharedPreferences("alarms", 0).edit()
+            .putString("items", org.json.JSONArray(listOf(a.json())).toString()).commit()
+        AlarmStore.schedule(context, a)
+        shell("input keyevent KEYCODE_HOME")
+        shell("input keyevent KEYCODE_SLEEP")
+        shell("dumpsys battery unplug")
+        shell("dumpsys deviceidle force-idle")
+        val notifications = context.getSystemService(android.app.NotificationManager::class.java)
+        val deadline = android.os.SystemClock.elapsedRealtime() + 40_000
+        while (android.os.SystemClock.elapsedRealtime() < deadline &&
+            notifications.activeNotifications.none { it.id == 1 }) Thread.sleep(250)
+        assertTrue("Alarm foreground notification did not appear while idle",
+            notifications.activeNotifications.any { it.id == 1 })
+        Thread.sleep(1000)
+        assertTrue(notifications.activeNotifications.any { it.id == 1 })
+        assertTrue("Fired reservation was not consumed", AlarmStore.list(context).isEmpty())
+    }
     private fun clear() { AlarmStore.list(context).forEach { AlarmStore.remove(context, it.id) } }
 
     @Test fun reservationPersistsAndIsRegisteredWithOs() {

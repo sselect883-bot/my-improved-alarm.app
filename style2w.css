@@ -155,16 +155,16 @@ body{
 }
 
 .all-container{
-    width: 50%;
-    max-width: 400px;
+    width:90%;
+    max-width:400px;
 
-    margin: 0 auto;
-    padding: 30px;
+    margin:0 auto;
+    padding:30px;
 
-    border: 2px solid #333;
-    border-radius: 30px;
+    border:2px solid #333;
+    border-radius:30px;
 
-    background-color: white;
+    background-color:white;
 }
 
 .title-container{

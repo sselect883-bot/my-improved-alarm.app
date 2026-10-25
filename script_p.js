@@ -1,7 +1,9 @@
 
 
 let alarmHour = null;
+alarmHour.className = 'alarmH';
 let alarmMinute = null;
+alarmHour.className = 'alarmM';
 let alarmPlayed = false;
 
 // アラーム設定ボタン
@@ -18,8 +20,6 @@ alarmButton.addEventListener("click", function() {
         "時刻が設定されていません";
         return;
     }
-
-    
 
     alarmPlayed = false;
 
@@ -52,11 +52,8 @@ function updateclock() {
     const month = now.getMonth() + 1;
     const date = now.getDate();
     const day = now.getDay();
-
-
     // 時刻表示
     const clock = document.getElementById("realtime-clock");
-
 
     clock.textContent = 
         String(hour).padStart(2,"0") + " : " +
@@ -108,11 +105,8 @@ stopButton.addEventListener("click", function(){
     const sound = document.getElementById("alarm-sound");
     sound.pause();
     sound.currentTime = 0;
-
     alarmPlayed = true;
 })
-
-
 
 setInterval(updateclock, 1000);
 

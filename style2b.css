@@ -226,12 +226,12 @@ body{
 }
 
 #alarm-hour:hover{
-    background-color:white;
+    background-color:#AAB4C8;
     color:black;
 }
 
 #alarm-minute:hover{
-    background-color: white;
+    background-color: #AAB4C8;
     color:black;
 }
 
@@ -284,6 +284,10 @@ button{
     padding:15px;
 }
 
+#alarm-message{
+    color:#AAB4C8;
+}
+
 .dli-clock {
   display: inline-block;
   vertical-align: middle;
@@ -319,9 +323,11 @@ button{
 }
 
 .alarm-list-container {
-    width: 100%;
-    max-width: 460px;
-    color:#AAB4C8;s
+    width: 90%;
+    max-width: 400px;
+    color:#AAB4C8;
+    margin:0 auto;
+    
 }
 
 #alarm-list {
